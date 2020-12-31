@@ -71,7 +71,7 @@ ownerSchema.methods.generateAuthToken = async function () {
     owner.tokens = owner.tokens.concat({token:token});
     await owner.save();
     return token;
-}
+};
 
 ownerSchema.pre('save',async function(next) {
     const owner = this;
