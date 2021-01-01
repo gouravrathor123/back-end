@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const Schema = mongoose.Schema;
 
-const employeeSchema = new Schema ({
+const employeeSchema = new Schema({
     first_name: {
         type: String,
         required: true,
@@ -15,56 +15,64 @@ const employeeSchema = new Schema ({
         required: true
     },
     email: {
-        type:String,
-        required:true,
-        unique:true,
+        type: String,
+        required: true,
+        unique: true,
         trim: true,
-        lowercase:true,
-        validate(value){
-            if(!validator.isEmail(value)){
+        lowercase: true,
+        validate(value) {
+            if (!validator.isEmail(value)) {
                 throw new Error('Email is invalid')
             }
         }
     },
-    password:{
+    password: {
         type: String,
         required: true,
         minlength: 7,
     },
-    phone:{
-        type:String,
-        required:null
+    phone: {
+        type: String,
+        required: null
     },
-    date_of_birth:{
+    date_of_birth: {
         type: Date,
-        required:true
+        required: true
     },
-    occupation:{
-        type:String,
+    occupation: {
+        type: String,
+        required: true
+    },
+    createdBy: {
+        type: String, //E for employee and C for company owner
         required: true
     },
     tokens: [{
         token: {
-            type:String,
-            required:true
+            type: String,
+            required: true
         }
     }]
 }, {
-    timestamps:true
+    timestamps: true
 });
 
 employeeSchema.methods.generateAuthToken = async function () {
     const user = this;
-    const token = jwt.sign({_id: user._id.toString()},process.env.JWT_SECRET);
-    user.tokens = user.tokens.concat({token:token});
+    const token = jwt.sign({
+        _id: user._id.toString()
+    }, process.env.JWT_SECRET);
+    user.tokens = user.tokens.concat({
+        token: token
+    });
     await user.save();
     return token;
 }
 
-employeeSchema.pre('save',async function(next) {
+employeeSchema.pre('save', async function (next) {
     const user = this;
 
-    if(user.isModified('password')){
+    if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8);
     }
 
@@ -74,4 +82,3 @@ employeeSchema.pre('save',async function(next) {
 const Employee = mongoose.model('Employee', employeeSchema);
 
 module.exports = Employee;
-
