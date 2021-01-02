@@ -3,20 +3,21 @@ const Employee = require("../models/Employee");
 module.exports = {
     add: async function (employee) {
         let result = null;
+        let token = null;
         try {
-            const employe = new Employee(employee);
             let usr = await Employee.findOne({
                 email: employee.email
             });
             if (usr) {
                 throw new Error("Email already registerd");
             } else {
-                let result1 = await Employee.create(employee);
+                const employe = new Employee(employee);
+                token = await employe.generateAuthToken();
+
                 result = await Employee.findOne({
-                    _id: result1._id
+                    _id: employe._id
                 });
             }
-            const token = await employe.generateAuthToken();
             return {
                 result,
                 token,
@@ -27,5 +28,87 @@ module.exports = {
                 error: err.message
             };
         }
-    }
+    },
+
+    update: async function (req, id) {
+        let result = null;
+        try {
+            await Employee.findByIdAndUpdate(id, {
+                first_name: req.first_name,
+                last_name: req.last_name,
+                password: req.password,
+                date_of_birth: req.date_of_birth,
+                occupation: req.occupation
+            });
+            result = await Employee.findOne({
+                _id: id
+            });
+            return {
+                result,
+                message: "Profile successfully updated."
+            }
+        } catch (err) {
+            return {
+                error: err.message
+            }
+        }
+    },
+
+    delete: async function (id) {
+        let result = null;
+        try {
+            result = await Employee.findById(
+                id
+            );
+            if (result) {
+                result = await Employee.findByIdAndDelete(id);
+                return {
+                    result: 1,
+                    message: "Employee deleted successfully"
+                };
+            } else {
+                throw Error(`no employee found for this id: ${id}`)
+            }
+
+        } catch (err) {
+            return {
+                error: err.message
+            };
+        }
+    },
+
+    get: async function (id) {
+        let result = null;
+        try {
+            result = await Employee.findById(id);
+            if (!result) {
+                throw Error("Employee not found");
+            }
+            return {
+                result,
+                message: "Employee found"
+            };
+        } catch (err) {
+            return {
+                error: err.message
+            };
+        };
+    },
+
+    list: async function (){
+        let result = null;
+        try{
+            result = await Employee.find();
+            if(!result){
+                throw Error("No Employee found");
+            }
+            return {
+                result,
+                message:"List of all Employees"
+            }
+        }catch(err){
+            return{error:err.message};
+        }
+    },
+
 }
