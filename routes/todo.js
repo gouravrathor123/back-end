@@ -8,4 +8,10 @@ router
         todoController.add
     );
 
+router
+    .route("/todo/update/:id")
+    .put(
+        todoController.edit
+    );
+
 module.exports = router;

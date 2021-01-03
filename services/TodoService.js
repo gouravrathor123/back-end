@@ -15,6 +15,26 @@ module.exports = {
         }catch(err){
             return{error:err.message};
         }
-      
-    }
+    },
+
+    update: async function (req, id) {
+        let result = null;
+        try {
+            await Todo.findByIdAndUpdate(id, {
+               description:req.description,
+               completed:req.completed
+            });
+            result = await Todo.findOne({
+                _id: id
+            });
+            return {
+                result,
+                message: "description updated"
+            }
+        } catch (err) {
+            return {
+                error: err.message
+            }
+        }
+    },
 }
