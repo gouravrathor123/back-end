@@ -30,7 +30,7 @@ router
     .route("/todo/list/:id") //list of all todos of a perticular user
     .get(
         todoController.list
-    )
+    );
 
 
 module.exports = router;

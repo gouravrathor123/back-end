@@ -8,9 +8,16 @@ module.exports = {
             let usr = await Employee.findOne({
                 email: employee.email
             });
+            let usr1 = await Employee.findOne({
+                phone:employee.phone
+            });
             if (usr) {
                 throw new Error("Email already registerd");
-            } else {
+            }
+            else if(usr1){
+                throw new Error("Phone no. is already registerd")
+            }
+            else {
                 const employe = new Employee(employee);
                 token = await employe.generateAuthToken();
 
@@ -33,6 +40,10 @@ module.exports = {
     update: async function (req, id) {
         let result = null;
         try {
+            let result1 = await Employee.findById(id);
+            if(!result1){
+                throw Error("No Employee found");
+            }
             await Employee.findByIdAndUpdate(id, {
                 first_name: req.first_name,
                 last_name: req.last_name,

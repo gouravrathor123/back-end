@@ -32,4 +32,10 @@ router
         ownerController.list
     );
 
+router
+    .route("/owner/login")
+    .post(
+        ownerController.login
+    )
+
 module.exports = router;

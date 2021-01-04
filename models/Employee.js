@@ -33,7 +33,7 @@ const employeeSchema = new Schema({
     },
     phone: {
         type: String,
-        required: null
+        required: true
     },
     date_of_birth: {
         type: Date,

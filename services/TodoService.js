@@ -1,6 +1,4 @@
 const Todo = require("../models/Todo");
-const Owner = require("../models/Owner");
-const Employee = require("../models/Employee");
 
 module.exports = {
     add: async function(todo){
@@ -22,6 +20,13 @@ module.exports = {
     update: async function (req, id) {
         let result = null;
         try {
+            if(Object.keys(req.body).length === 0){
+                throw Error("Body can not be empty");
+            }
+            let result1 = await Todo.findById(id);
+            if(!result1){
+                throw Error("No Todo is found");
+            }
             await Todo.findByIdAndUpdate(id, {
                description:req.description,
                completed:req.completed

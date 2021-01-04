@@ -33,4 +33,9 @@ module.exports = {
         let result = await ownerServ.list();
         utils.sendResponse(result,req,res);
     },
+
+    login: async function (req,res){
+        let result = await ownerServ.login(req.body)
+        utils.sendResponse(result,req,res);
+    }
 };

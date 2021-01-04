@@ -8,9 +8,16 @@ module.exports = {
             let ow = await Owner.findOne({
                 email: owner.email
             });
+            let ow1 = await Owner.findOne({
+                phone: owner.phone
+            });
             if (ow) {
                 throw new Error("Email already registerd");
-            } else {
+            }
+            else if(ow1){
+                throw new Error("Phone Number is already registerd")
+            }
+            else {
                 const own = new Owner(owner);
                 token = await own.generateAuthToken();
                 result = await Owner.findOne({
@@ -29,9 +36,16 @@ module.exports = {
         }
     },
 
-    update: async function (req, id) {
+    update: async function (req,id) {
         let result = null;
         try {
+            if(Object.keys(req).length === 0){
+                throw Error("Body can not be empty");
+            }
+            let result1 = await Owner.findById(id);
+            if(!result1){
+                throw Error("Owner not found");
+            }
             await Owner.findByIdAndUpdate(id, {
                 first_name: req.first_name,
                 last_name: req.last_name,
@@ -106,6 +120,18 @@ module.exports = {
                 result,
                 message:"List of all Owners"
             }
+        }catch(err){
+            return{error:err.message};
+        }
+    },
+
+    login: async function(req){
+        let result = null;
+        try{
+            result = await Owner.find({phone:req.phone});
+            console.log(result);
+            const token = await result.generateAuthToken();
+            return {result,token,message:"Owner loged in successfully"};
         }catch(err){
             return{error:err.message};
         }
