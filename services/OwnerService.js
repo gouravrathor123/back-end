@@ -1,4 +1,7 @@
+const express = require('express');
 const Owner = require("../models/Owner");
+const bcrypt = require("bcrypt");
+const auth = require("../middleware/auth");
 
 module.exports = {
     add: async function (owner) {
@@ -128,10 +131,17 @@ module.exports = {
     login: async function(req){
         let result = null;
         try{
-            result = await Owner.find({phone:req.phone});
-            console.log(result);
-            const token = await result.generateAuthToken();
-            return {result,token,message:"Owner loged in successfully"};
+            const result = await Owner.findOne({phone:req.phone});
+            if(!result){
+                throw new Error('Unable to login');
+            }
+            const isMatch = await bcrypt.compare(req.password,result.password);
+            
+            if(!isMatch){
+                throw new Error('Unable to login');
+            }
+
+            return {result,message:"Owner loged in successfully"};
         }catch(err){
             return{error:err.message};
         }

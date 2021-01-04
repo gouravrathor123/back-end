@@ -41,7 +41,8 @@ const ownerSchema = new Schema({
     },
     phone: {
         type: String,
-        required: true
+        required: true,
+        unique:true
     },
     address: {
         type: String,
@@ -77,6 +78,8 @@ ownerSchema.methods.generateAuthToken = async function () {
     return token;
 };
 
+
+
 ownerSchema.pre('save', async function (next) {
     const owner = this;
 
@@ -85,7 +88,8 @@ ownerSchema.pre('save', async function (next) {
     }
 
     next();
-})
+});
+
 
 const Owner = mongoose.model('Owner', ownerSchema);
 
