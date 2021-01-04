@@ -1,4 +1,6 @@
 const Todo = require("../models/Todo");
+const Owner = require("../models/Owner");
+const Employee = require("../models/Employee");
 
 module.exports = {
     add: async function(todo){
@@ -37,4 +39,45 @@ module.exports = {
             }
         }
     },
+
+    get: async function(id){
+        let result = null;
+        try{
+            result = await Todo.findById(id);
+            if(!result){
+                throw Error("no todo found");
+            }
+            return{result,message:"todo found"};
+        }catch(err){
+            return{error:err.message};
+        }
+    },
+
+    delete: async function(id){
+        let result = null;
+        try{
+            result = await Todo.findById(id);
+            if (result) {
+                result = await Todo.findByIdAndDelete(id);
+                return {
+                    result: 1,
+                    message: "Todo deleted successfully"
+                };
+            } else {
+                throw Error(`no todo found for this id: ${id}`)
+            }
+        }catch(err){
+            return{error:err.message}
+        }
+    },
+
+    list: async function(id){
+        let result = null;
+        try{
+           result = await Todo.find({owner:id});
+           return{result,message:"list of all tasks of this users"};
+        }catch(err){
+            return {error:err.message};
+        }
+    }
 }
