@@ -34,7 +34,7 @@ const employeeSchema = new Schema({
     phone: {
         type: String,
         required: true,
-        unique:true
+        unique: true
     },
     date_of_birth: {
         type: Date,
@@ -43,6 +43,18 @@ const employeeSchema = new Schema({
     occupation: {
         type: String,
         required: true
+    },
+    reset_password_token: {
+        type: String
+    },
+    reset_password_expires: {
+        type: String
+    },
+    otp: {
+        type: String
+    },
+    company_code: {
+        type: String,
     },
     createdBy: {
         type: String, //E for employee and C for company owner

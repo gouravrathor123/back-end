@@ -36,6 +36,56 @@ router
     .route("/owner/login")
     .post(
         ownerController.login
-    )
+    );
+
+router
+    .route("/owner/forget")
+    .post(
+        ownerController.forgetPassword
+    );
+
+router
+    .route("/owner/reset")
+    .post(
+        ownerController.resetPassword
+    );
+
+router
+    .route("/owner/register")
+    .post(
+        ownerController.register
+    );
+
+router
+    .route("/owner/verify")
+    .post(
+        ownerController.verify
+    );
+
+router
+    .route("/owner/addTask")
+    .post(
+        ownerController.addTask
+    );
+
+router
+    .route("/owner/editTask/:id")
+    .put(
+        ownerController.editTask
+    );
+
+router
+    .route("/owner/deleteTask/:id")
+    .delete(
+        ownerController.deleteTask
+    );
+
+router
+    .route("/owner/getAllTask/:id")
+    .get(
+        ownerController.getAllTask
+    );
+
+
 
 module.exports = router;

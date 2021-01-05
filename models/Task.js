@@ -3,8 +3,8 @@ const validator = require('validator');
 
 const Schema = mongoose.Schema;
 
-const todoSchema = new Schema({
-    description: {
+const taskSchema = new Schema({
+    task: {
         type: String,
         required: true,
         trim: true
@@ -13,12 +13,11 @@ const todoSchema = new Schema({
         type: Boolean,
         default: false
     },
-    owner_type: {
-        type: String, //E for employee and C for company
+    assigned_to: {
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-        trim: true
     },
-    owner: {
+    assigned_by: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
     }
@@ -26,6 +25,6 @@ const todoSchema = new Schema({
     timestamps: true
 });
 
-const Todo = mongoose.model('Todo', todoSchema);
+const Task = mongoose.model('Task', taskSchema);
 
-module.exports = Todo;
+module.exports = Task;

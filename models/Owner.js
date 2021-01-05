@@ -22,7 +22,7 @@ const ownerSchema = new Schema({
         lowercase: true,
         validate(value) {
             if (!validator.isEmail(value)) {
-                throw new Error('Email is invalid')
+                throw new Error('Email is invalid');
             }
         }
     },
@@ -39,10 +39,14 @@ const ownerSchema = new Schema({
         type: String,
         required: true
     },
+    company_code: {
+        type: String,
+        required: true
+    },
     phone: {
         type: String,
         required: true,
-        unique:true
+        unique: true
     },
     address: {
         type: String,
@@ -51,6 +55,15 @@ const ownerSchema = new Schema({
     industry: {
         type: String,
         required: true
+    },
+    reset_password_token: {
+        type: String
+    },
+    reset_password_expires: {
+        type: String
+    },
+    otp: {
+        type: String
     },
     CIN: {
         type: String,

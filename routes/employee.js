@@ -33,5 +33,48 @@ router
         employeeController.list
     );
 
+router
+    .route("/employee/login")
+    .post(
+        employeeController.login
+    );
+
+router
+    .route("/employee/forget")
+    .post(
+        employeeController.forgetPassword
+    );
+
+router
+    .route("/employee/reset")
+    .post(
+        employeeController.resetPassword
+    );
+
+router
+    .route("/employee/register")
+    .post(
+        employeeController.register
+    );
+
+router
+    .route("/owner/verify")
+    .post(
+        employeeController.verify
+    );
+
+
+router
+    .route("/employee/getTasks/:id")
+    .get(
+        employeeController.getTasks
+    );
+
+router
+    .route("/employee/editTask/:id")
+    .put(
+        employeeController.editTask
+    );
+
 
 module.exports = router;

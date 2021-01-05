@@ -7,7 +7,7 @@ module.exports = {
         utils.sendResponse(result, req, res);
     },
 
-    edit: async function (req,res) {
+    edit: async function (req, res) {
         let {
             id
         } = req.params;
@@ -15,21 +15,27 @@ module.exports = {
         utils.sendResponse(result, req, res);
     },
 
-    get: async function(req,res){
-        let {id} = req.params;
+    get: async function (req, res) {
+        let {
+            id
+        } = req.params;
         let result = await todoServ.get(id);
-        utils.sendResponse(result,req,res);
+        utils.sendResponse(result, req, res);
     },
 
-    delete: async function(req,res){
-        let {id} = req.params;
+    delete: async function (req, res) {
+        let {
+            id
+        } = req.params;
         let result = await todoServ.delete(id);
-        utils.sendResponse(result,req,res);
+        utils.sendResponse(result, req, res);
     },
 
-    list: async function(req,res){
-        let {id} = req.params;
+    list: async function (req, res) {
+        let {
+            id
+        } = req.params;
         let result = await todoServ.list(id);
-        utils.sendResponse(result,req,res);
+        utils.sendResponse(result, req, res);
     }
 };

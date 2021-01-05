@@ -1,35 +1,39 @@
 const Todo = require("../models/Todo");
 
 module.exports = {
-    add: async function(todo){
-        try{
+    add: async function (todo) {
+        try {
             const result1 = await Todo.findOne({
-                description:todo.description,
-                owner:todo.owner
+                description: todo.description,
+                owner: todo.owner
             })
-            if(result1){
+            if (result1) {
                 throw Error("This item is already there");
             }
             const result = await Todo.create(todo);
-            return{result};
-        }catch(err){
-            return{error:err.message};
+            return {
+                result
+            };
+        } catch (err) {
+            return {
+                error: err.message
+            };
         }
     },
 
     update: async function (req, id) {
         let result = null;
         try {
-            if(Object.keys(req.body).length === 0){
+            if (Object.keys(req.body).length === 0) {
                 throw Error("Body can not be empty");
             }
             let result1 = await Todo.findById(id);
-            if(!result1){
+            if (!result1) {
                 throw Error("No Todo is found");
             }
             await Todo.findByIdAndUpdate(id, {
-               description:req.description,
-               completed:req.completed
+                description: req.description,
+                completed: req.completed
             });
             result = await Todo.findOne({
                 _id: id
@@ -45,22 +49,27 @@ module.exports = {
         }
     },
 
-    get: async function(id){
+    get: async function (id) {
         let result = null;
-        try{
+        try {
             result = await Todo.findById(id);
-            if(!result){
+            if (!result) {
                 throw Error("no todo found");
             }
-            return{result,message:"todo found"};
-        }catch(err){
-            return{error:err.message};
+            return {
+                result,
+                message: "todo found"
+            };
+        } catch (err) {
+            return {
+                error: err.message
+            };
         }
     },
 
-    delete: async function(id){
+    delete: async function (id) {
         let result = null;
-        try{
+        try {
             result = await Todo.findById(id);
             if (result) {
                 result = await Todo.findByIdAndDelete(id);
@@ -71,18 +80,27 @@ module.exports = {
             } else {
                 throw Error(`no todo found for this id: ${id}`)
             }
-        }catch(err){
-            return{error:err.message}
+        } catch (err) {
+            return {
+                error: err.message
+            }
         }
     },
 
-    list: async function(id){
+    list: async function (id) {
         let result = null;
-        try{
-           result = await Todo.find({owner:id});
-           return{result,message:"list of all tasks of this users"};
-        }catch(err){
-            return {error:err.message};
+        try {
+            result = await Todo.find({
+                owner: id
+            });
+            return {
+                result,
+                message: "list of all tasks of this users"
+            };
+        } catch (err) {
+            return {
+                error: err.message
+            };
         }
     }
 }
