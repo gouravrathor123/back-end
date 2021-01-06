@@ -8,28 +8,27 @@ module.exports = {
     },
 
     edit: async function (req, res) {
-        let {
-            id
-        } = req.params;
-        let result = await employeeServ.update(req.body, id);
+        let result = await employeeServ.update(req);
+        utils.sendResponse(result, req, res);
+    },
+
+    getProfile: async function (req, res) {
+        let result = await employeeServ.getme(req);
         utils.sendResponse(result, req, res);
     },
 
     delete: async function (req, res) {
-        let {
-            id
-        } = req.params;
-        let result = await employeeServ.delete(id);
+        let result = await employeeServ.delete(req);
         utils.sendResponse(result, req, res);
     },
 
-    get: async function (req, res) {
-        let {
-            id
-        } = req.params;
-        let result = await employeeServ.get(id);
-        utils.sendResponse(result, req, res);
-    },
+    // get: async function (req, res) {
+    //     let {
+    //         id
+    //     } = req.params;
+    //     let result = await employeeServ.get(id);
+    //     utils.sendResponse(result, req, res);
+    // },
 
     list: async function (req, res) {
         let result = await employeeServ.list();
@@ -61,6 +60,10 @@ module.exports = {
         utils.sendResponse(result, req, res);
     },
 
+    logout: async function (req, res) {
+        let result = await employeeServ.logout(req);
+        utils.sendResponse(result, req, res);
+    },
 
     getTasks: async function (req, res) {
         let {

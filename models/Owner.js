@@ -79,7 +79,7 @@ const ownerSchema = new Schema({
     timestamps: true
 });
 
-ownerSchema.methods.generateAuthToken = async function () {
+ownerSchema.methods.OgenerateAuthToken = async function () {
     const owner = this;
     const token = jwt.sign({
         _id: owner._id.toString()

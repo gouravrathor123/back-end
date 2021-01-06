@@ -6,6 +6,7 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const Vonage = require('@vonage/server-sdk');
 const Employee = require('../models/Employee');
+const Oauth = require('../middleware/Owner/Oauth');
 
 
 module.exports = {
@@ -29,7 +30,7 @@ module.exports = {
                 throw new Error("Phone Number is already registerd")
             } else {
                 const own = new Owner(owner);
-                token = await own.generateAuthToken();
+                token = await own.OgenerateAuthToken();
                 result = await Owner.findOne({
                     _id: own._id
                 });
@@ -52,22 +53,24 @@ module.exports = {
             if (Object.keys(req).length === 0) {
                 throw Error("Body can not be empty");
             }
-            let result1 = await Owner.findById(id);
+            let result1 = req.owner;
             if (!result1) {
                 throw Error("Owner not found");
             }
-            await Owner.findByIdAndUpdate(id, {
-                first_name: req.first_name,
-                last_name: req.last_name,
-                password: req.password,
-                date_of_birth: req.date_of_birth,
-                company_name: req.company_name,
-                industry: req.industry,
-                CIN: req.CIN,
-                address: req.address
+
+            let password = await bcrypt.hash(req.body.password, 8);
+            await Owner.findByIdAndUpdate(result1._id, {
+                first_name: req.body.first_name,
+                last_name: req.body.last_name,
+                password: password,
+                date_of_birth: req.body.date_of_birth,
+                company_name: req.body.company_name,
+                industry: req.body.industry,
+                CIN: req.body.CIN,
+                address: req.body.address
             });
             result = await Owner.findOne({
-                _id: id
+                _id: result1._id
             });
             return {
                 result,
@@ -80,18 +83,35 @@ module.exports = {
         }
     },
 
-    delete: async function (id) {
+    getProfile: async function (req) {
         let result = null;
         try {
-            result = await Owner.findById(id);
+            result = req.owner;
+            if (!result) {
+                throw Error();
+            }
+            return {
+                result
+            };
+        } catch (err) {
+            return {
+                error: err.message
+            };
+        }
+    },
+
+    delete: async function (req) {
+        let result = null;
+        try {
+            result = req.owner;
             if (result) {
-                result = await Owner.findByIdAndDelete(id);
+                await Owner.findByIdAndDelete(result._id);
                 return {
                     result: 1,
                     message: "Owner deleted successfully"
                 };
             } else {
-                throw Error(`no owner found for this id: ${id}`)
+                throw Error();
             }
 
         } catch (err) {
@@ -152,8 +172,11 @@ module.exports = {
                 throw new Error('Unable to login');
             }
 
+            const token = await result.OgenerateAuthToken();
+
             return {
                 result,
+                token,
                 message: "Owner loged in successfully"
             };
         } catch (err) {
@@ -303,6 +326,24 @@ module.exports = {
 
     verify: async function (otp) {
 
+    },
+
+    logout: async function (req) {
+        try {
+            req.owner.tokens = req.owner.tokens.filter((token) => {
+                return token.token !== req.token
+            });
+
+            await req.owner.save();
+            return {
+                result: 1,
+                message: "Owner logged out succesfully"
+            }
+        } catch (err) {
+            return {
+                error: err.message
+            };
+        }
     },
 
     addTask: async function (task) {

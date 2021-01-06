@@ -70,15 +70,15 @@ const employeeSchema = new Schema({
     timestamps: true
 });
 
-employeeSchema.methods.generateAuthToken = async function () {
-    const user = this;
+employeeSchema.methods.EgenerateAuthToken = async function () {
+    const employee = this;
     const token = jwt.sign({
-        _id: user._id.toString()
+        _id: employee._id.toString()
     }, process.env.JWT_SECRET);
-    user.tokens = user.tokens.concat({
+    employee.tokens = employee.tokens.concat({
         token: token
     });
-    await user.save();
+    await employee.save();
     return token;
 }
 

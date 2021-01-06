@@ -1,5 +1,5 @@
 const express = require('express');
-const Employee = require('../models/Employee');
+const Eauth = require("../middleware/Employee/Eauth");
 const employeeController = require("../controller/EmployeeController");
 const router = new express.Router();
 
@@ -10,21 +10,38 @@ router
     );
 
 router
-    .route("/employee/update/:id")
+    .route("/employee/update/")
     .put(
+        Eauth,
         employeeController.edit
     );
 
 router
-    .route("/employee/delete/:id")
+    .route("/employee/delete/")
     .delete(
+        Eauth,
         employeeController.delete
     );
 
+// router
+//     .route("/employee/:id")
+//     .get(
+//         Eauth,
+//         employeeController.get
+//     );
+
 router
-    .route("/employee/:id")
+    .route("/employee/getProfile")
     .get(
-        employeeController.get
+        Eauth,
+        employeeController.getProfile
+    )
+
+router
+    .route("/employee/logout")
+    .post(
+        Eauth,
+        employeeController.logout
     );
 
 router
@@ -42,12 +59,14 @@ router
 router
     .route("/employee/forget")
     .post(
+        Eauth,
         employeeController.forgetPassword
     );
 
 router
     .route("/employee/reset")
     .post(
+        Eauth,
         employeeController.resetPassword
     );
 

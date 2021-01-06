@@ -6,6 +6,7 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const Vonage = require('@vonage/server-sdk');
 const Employee = require('../models/Employee');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     add: async function (employee) {
@@ -24,7 +25,7 @@ module.exports = {
                 throw new Error("Phone no. is already registerd")
             } else {
                 const employe = new Employee(employee);
-                token = await employe.generateAuthToken();
+                token = await employe.EgenerateAuthToken();
 
                 result = await Employee.findOne({
                     _id: employe._id
@@ -42,25 +43,25 @@ module.exports = {
         }
     },
 
-    update: async function (req, id) {
+    update: async function (req) {
         let result = null;
         try {
             if (Object.keys(req).length === 0) {
                 throw Error("Body can not be empty");
             }
-            let result1 = await Employee.findById(id);
+            let result1 = req.employee;
             if (!result1) {
                 throw Error("No Employee found");
             }
-            await Employee.findByIdAndUpdate(id, {
-                first_name: req.first_name,
-                last_name: req.last_name,
-                password: req.password,
-                date_of_birth: req.date_of_birth,
-                occupation: req.occupation
+            await Employee.findByIdAndUpdate(result1._id, {
+                first_name: req.body.first_name,
+                last_name: req.body.last_name,
+                password: req.body.password,
+                date_of_birth: req.body.date_of_birth,
+                occupation: req.body.occupation
             });
             result = await Employee.findOne({
-                _id: id
+                _id: result1._id
             });
             return {
                 result,
@@ -73,20 +74,26 @@ module.exports = {
         }
     },
 
-    delete: async function (id) {
+    getProfile: async function (req) {
+        let result = req.employee;
+        console.log(result);
+        return {
+            result
+        };
+    },
+
+    delete: async function (req) {
         let result = null;
         try {
-            result = await Employee.findById(
-                id
-            );
+            result = req.employee
             if (result) {
-                result = await Employee.findByIdAndDelete(id);
+                result = await Employee.findByIdAndDelete(result._id);
                 return {
                     result: 1,
                     message: "Employee deleted successfully"
                 };
             } else {
-                throw Error(`no employee found for this id: ${id}`)
+                throw Error();
             }
 
         } catch (err) {
@@ -96,23 +103,23 @@ module.exports = {
         }
     },
 
-    get: async function (id) {
-        let result = null;
-        try {
-            result = await Employee.findById(id);
-            if (!result) {
-                throw Error("Employee not found");
-            }
-            return {
-                result,
-                message: "Employee found"
-            };
-        } catch (err) {
-            return {
-                error: err.message
-            };
-        };
-    },
+    // get: async function (id) {
+    //     let result = null;
+    //     try {
+    //         result = await Employee.findById(id);
+    //         if (!result) {
+    //             throw Error("Employee not found");
+    //         }
+    //         return {
+    //             result,
+    //             message: "Employee found"
+    //         };
+    //     } catch (err) {
+    //         return {
+    //             error: err.message
+    //         };
+    //     };
+    // },
 
     list: async function () {
         let result = null;
@@ -147,8 +154,11 @@ module.exports = {
                 throw new Error('Unable to login');
             }
 
+            let token = await result.EgenerateAuthToken();
+
             return {
                 result,
+                token,
                 message: "Owner loged in successfully"
             };
         } catch (err) {
@@ -298,6 +308,24 @@ module.exports = {
 
     verify: async function (otp) {
 
+    },
+
+    logout: async function (req) {
+        try {
+            req.employee.tokens = req.employee.tokens.filter((token) => {
+                return token.token !== req.token
+            });
+
+            await req.employee.save();
+            return {
+                result: 1,
+                message: "Employee logged out succesfully"
+            }
+        } catch (err) {
+            return {
+                error: err.message
+            };
+        }
     },
 
     getTasks: async function (id) {

@@ -1,3 +1,4 @@
+const Owner = require("../models/Owner");
 const ownerServ = require("../services/OwnerService");
 const utils = require("../utils/utils");
 
@@ -8,26 +9,25 @@ module.exports = {
     },
 
     edit: async function (req, res) {
-        let {
-            id
-        } = req.params;
-        let result = await ownerServ.update(req.body, id);
+        let result = await ownerServ.update(req);
         utils.sendResponse(result, req, res);
     },
 
     delete: async function (req, res) {
-        let {
-            id
-        } = req.params;
-        let result = await ownerServ.delete(id);
+        let result = await ownerServ.delete(req);
         utils.sendResponse(result, req, res);
     },
 
-    get: async function (req, res) {
-        let {
-            id
-        } = req.params;
-        let result = await ownerServ.get(id);
+    // get: async function (req, res) {
+    //     let {
+    //         id
+    //     } = req.params;
+    //     let result = await ownerServ.get(id);
+    //     utils.sendResponse(result, req, res);
+    // },
+
+    getProfile: async function (req, res) {
+        let result = await ownerServ.getProfile(req);
         utils.sendResponse(result, req, res);
     },
 
@@ -58,6 +58,11 @@ module.exports = {
 
     verify: async function (req, res) {
         let result = await ownerServ.register(req.body.otp);
+        utils.sendResponse(result, req, res);
+    },
+
+    logout: async function (req, res) {
+        let result = await ownerServ.logout(req);
         utils.sendResponse(result, req, res);
     },
 
