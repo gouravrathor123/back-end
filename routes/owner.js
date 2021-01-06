@@ -85,6 +85,7 @@ router
 router
     .route("/owner/addTask")
     .post(
+        Oauth,
         ownerController.addTask
     );
 
@@ -101,8 +102,9 @@ router
     );
 
 router
-    .route("/owner/getAllTask/:id")
+    .route("/owner/getAllTask/")
     .get(
+        Oauth,
         ownerController.getAllTask
     );
 

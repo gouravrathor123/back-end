@@ -84,8 +84,9 @@ router
 
 
 router
-    .route("/employee/getTasks/:id")
+    .route("/employee/getTasks/")
     .get(
+        Eauth,
         employeeController.getTasks
     );
 

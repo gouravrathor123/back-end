@@ -328,11 +328,11 @@ module.exports = {
         }
     },
 
-    getTasks: async function (id) {
+    getTasks: async function (req) {
         let result = null;
         try {
             result = await Task.find({
-                assigned_to: id
+                assigned_to: req.employee._id
             });
             if (result.length === 0) {
                 throw Error("There is no task for you");

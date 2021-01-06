@@ -66,10 +66,7 @@ module.exports = {
     },
 
     getTasks: async function (req, res) {
-        let {
-            id
-        } = req.params;
-        let result = await employeeServ.getTasks(id);
+        let result = await employeeServ.getTasks(req);
         utils.sendResponse(result, req, res);
     },
 

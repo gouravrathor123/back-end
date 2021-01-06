@@ -346,24 +346,25 @@ module.exports = {
         }
     },
 
-    addTask: async function (task) {
+    addTask: async function (req) {
         let result = null;
         try {
-
-            let EcompanyCode = await Employee.findById(task.assigned_to);
-            let OcompanyCode = await Owner.findById(task.assigned_by);
+            let owner = req.owner;
+            let EcompanyCode = await Employee.findById(req.body.assigned_to);
+            let OcompanyCode = await Owner.findById(owner._id);
             if (EcompanyCode.company_code !== OcompanyCode.company_code) {
                 throw Error("you cant assign task to this user");
             }
             const result1 = await Task.findOne({
-                task: task.task,
-                assigned_by: task.assigned_by,
-                assigned_to: task.assigned_to
+                task: req.body.task,
+                assigned_by: owner._id,
+                assigned_to: req.body.assigned_to
             })
             if (result1) {
                 throw Error("This item is already there");
             }
-            result = await Task.create(task);
+            Object.assign(req.body, {assigned_by: owner._id});
+            result = await Task.create(req.body);
             return {
                 result,
                 message: "task assigned"
@@ -424,13 +425,14 @@ module.exports = {
         }
     },
 
-    getAllTask: async function (id) {
+    getAllTask: async function (req) {
         let result = null;
         try {
             result = await Task.find({
-                assigned_by: id
+                assigned_by: req.owner._id
             });
-            if (result.length) {
+
+            if (result.length === 0) {
                 throw Error("No task found");
             }
             return {

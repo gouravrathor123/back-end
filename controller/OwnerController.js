@@ -67,12 +67,12 @@ module.exports = {
     },
 
     addTask: async function (req, res) {
-        let result = await ownerServ.addTask(req.body);
+        let result = await ownerServ.addTask(req);
         utils.sendResponse(result, req, res);
     },
 
     addTask: async function (req, res) {
-        let result = await ownerServ.addTask(req.body);
+        let result = await ownerServ.addTask(req);
         utils.sendResponse(result, req, res);
     },
 
@@ -93,10 +93,7 @@ module.exports = {
     },
 
     getAllTask: async function (req, res) {
-        let {
-            id
-        } = req.params;
-        let result = await ownerServ.getAllTask(id);
+        let result = await ownerServ.getAllTask(req);
         utils.sendResponse(result, req, res);
     },
 };
