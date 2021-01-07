@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const employeeRouter = require('./routes/employee');
 const ownerRouter = require('./routes/owner');
 const todoRouter = require('./routes/todo');
+const catalogRouter = require('./routes/catalog');
+const productRouter = require('./routes/product');
 
 require('dotenv').config();
 
@@ -15,6 +17,8 @@ app.use(express.json());
 app.use(employeeRouter);
 app.use(ownerRouter);
 app.use(todoRouter);
+app.use(catalogRouter);
+app.use(productRouter);
 
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {
