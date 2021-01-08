@@ -10,4 +10,33 @@ router
         catalogController.add
     )
 
+router
+    .route("/editcatalog/:id")
+    .put(
+        Oauth,
+        catalogController.edit
+    )
+
+router
+    .route("/allcatalogs")
+    .get(
+        Oauth,
+        catalogController.getAll
+    )
+
+router
+    .route("/deletecatalog/:id")
+    .delete(
+        Oauth,
+        catalogController.delete
+    )
+
+router
+    .route("/getcatalog/:id")
+    .get(
+        Oauth,
+        catalogController.get
+    )
+
+
 module.exports = router;

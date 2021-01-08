@@ -11,7 +11,7 @@ module.exports = {
         let {
             id
         } = req.params;
-        let result = await todoServ.update(req.body, id);
+        let result = await catalogServ.update(req, id);
         utils.sendResponse(result, req, res);
     },
 
@@ -19,23 +19,20 @@ module.exports = {
         let {
             id
         } = req.params;
-        let result = await todoServ.get(id);
+        let result = await catalogServ.get(id);
         utils.sendResponse(result, req, res);
+    },
+
+    getAll: async function(req,res){
+        let result = await catalogServ.getAll(req);
+        utils.sendResponse(result,req,res);
     },
 
     delete: async function (req, res) {
         let {
             id
         } = req.params;
-        let result = await todoServ.delete(id);
+        let result = await catalogServ.delete(id);
         utils.sendResponse(result, req, res);
     },
-
-    list: async function (req, res) {
-        let {
-            id
-        } = req.params;
-        let result = await todoServ.list(id);
-        utils.sendResponse(result, req, res);
-    }
 };

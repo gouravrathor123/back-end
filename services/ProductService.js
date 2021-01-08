@@ -1,12 +1,15 @@
+const { compareSync } = require("bcrypt");
 const Product = require("../models/Products");
 
 module.exports = {
     add: async function (req) {
         try {
            const body = req.body;
+           
            Object.assign(body,{owner:req.owner._id})
            const result1 = await Product.find(body);
-           if(result1){
+           
+           if(result1.length!==0){
                throw Error("Product already exists");
            }
            const result = await Product.create(body);
@@ -28,20 +31,21 @@ module.exports = {
             if (Object.keys(req.body).length === 0) {
                 throw Error("Body can not be empty");
             }
-            let result1 = await Todo.findById(id);
+            let result1 = await Product.findById(id);
             if (!result1) {
-                throw Error("No Todo is found");
+                throw Error("No Product is found");
             }
-            await Todo.findByIdAndUpdate(id, {
-                description: req.description,
-                completed: req.completed
+            await Product.findByIdAndUpdate(id, {
+                name: req.body.name,
+                price: req.body.price,
+                image:req.body.image
             });
-            result = await Todo.findOne({
+            result = await Product.findOne({
                 _id: id
             });
             return {
                 result,
-                message: "description updated"
+                message: "product details updated "
             }
         } catch (err) {
             return {
@@ -53,33 +57,47 @@ module.exports = {
     get: async function (id) {
         let result = null;
         try {
-            result = await Todo.findById(id);
+            result = await Product.findById(id);
             if (!result) {
-                throw Error("no todo found");
+                throw Error("no product found");
             }
             return {
                 result,
-                message: "todo found"
+                message: "product found"
             };
         } catch (err) {
             return {
                 error: err.message
             };
+        }
+    },
+
+    getAll: async function (req){
+        let result = null;
+        try{
+            let owner = req.owner;
+            result = await Product.find({owner:owner._id});
+            if(result.length===0){
+                throw Error("no product found");
+            }
+            return{result,message:"all product for the perticular owner"}
+        }catch(err){
+            return{error:err.message}
         }
     },
 
     delete: async function (id) {
         let result = null;
         try {
-            result = await Todo.findById(id);
+            result = await Product.findById(id);
             if (result) {
-                result = await Todo.findByIdAndDelete(id);
+                result = await Product.findByIdAndDelete(id);
                 return {
                     result: 1,
-                    message: "Todo deleted successfully"
+                    message: "Product deleted successfully"
                 };
             } else {
-                throw Error(`no todo found for this id: ${id}`)
+                throw Error(`no product found for this id: ${id}`)
             }
         } catch (err) {
             return {
@@ -87,21 +105,4 @@ module.exports = {
             }
         }
     },
-
-    list: async function (id) {
-        let result = null;
-        try {
-            result = await Todo.find({
-                owner: id
-            });
-            return {
-                result,
-                message: "list of all tasks of this users"
-            };
-        } catch (err) {
-            return {
-                error: err.message
-            };
-        }
-    }
 }
