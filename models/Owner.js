@@ -37,7 +37,8 @@ const ownerSchema = new Schema({
     },
     company_name: {
         type: String,
-        required: true
+        required: true,
+        unique:true
     },
     company_code: {
         type: String,

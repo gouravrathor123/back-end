@@ -13,6 +13,9 @@ module.exports = {
         let result = null;
         let token = null;
         try {
+            if (Object.keys(employee).length === 0) {
+                throw Error("Body can not be empty");
+            }
             let usr = await Employee.findOne({
                 email: employee.email
             });

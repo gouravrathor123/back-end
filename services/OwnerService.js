@@ -20,6 +20,9 @@ module.exports = {
             let ow1 = await Owner.findOne({
                 phone: owner.phone
             });
+            let com = await Owner.findOne({
+                company_name: owner.company_name
+            })
             let code = owner.company_name + "456";
             Object.assign(owner, {
                 company_code: code
@@ -28,6 +31,8 @@ module.exports = {
                 throw new Error("Email already registerd");
             } else if (ow1) {
                 throw new Error("Phone Number is already registerd")
+            } else if(com) {
+                throw new Error("Company name is already taken")
             } else {
                 const own = new Owner(owner);
                 token = await own.OgenerateAuthToken();
@@ -87,6 +92,7 @@ module.exports = {
         let result = null;
         try {
             result = req.owner;
+            console.log(result);
             if (!result) {
                 throw Error();
             }

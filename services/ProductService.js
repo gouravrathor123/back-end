@@ -1,5 +1,7 @@
 const { compareSync } = require("bcrypt");
 const Product = require("../models/Products");
+const Catalog = require("../models/Catolog");
+const Owner = require("../models/Owner");
 
 module.exports = {
     add: async function (req) {
@@ -32,6 +34,7 @@ module.exports = {
                 throw Error("Body can not be empty");
             }
             let result1 = await Product.findById(id);
+        
             if (!result1) {
                 throw Error("No Product is found");
             }
@@ -58,6 +61,7 @@ module.exports = {
         let result = null;
         try {
             result = await Product.findById(id);
+            console.log(result);
             if (!result) {
                 throw Error("no product found");
             }
@@ -76,6 +80,7 @@ module.exports = {
         let result = null;
         try{
             let owner = req.owner;
+
             result = await Product.find({owner:owner._id});
             if(result.length===0){
                 throw Error("no product found");
@@ -90,8 +95,24 @@ module.exports = {
         let result = null;
         try {
             result = await Product.findById(id);
+            let owner = await Owner.findById(result.owner);
+            let catalog = await Catalog.find({company_name:owner.company_name});
+            //2nd step
+            // req.owner.tokens = req.owner.tokens.filter((token) => {
+            //     return token.token !== req.token
+            // });
+            // console.log(catalog[0].products);
+            let product = catalog[0].products.filter((prod) => {
+                return prod.product !== id
+            });
+            //step3
+            const cat = await Catalog.findByIdAndUpdate(catalog[0]._id, {
+                products:product
+            });
+            
             if (result) {
                 result = await Product.findByIdAndDelete(id);
+
                 return {
                     result: 1,
                     message: "Product deleted successfully"

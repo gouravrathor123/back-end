@@ -5,6 +5,9 @@ module.exports = {
         try {
             const owner = req.owner
             const body = req.body
+            if (Object.keys(body).length === 0) {
+                throw Error("Body can not be empty");
+            }
             Object.assign(body,{company_name:owner.company_name,email:owner.email,phone:owner.phone,address:owner.address});
             const result1 = await Catalog.find(body);
             if(result1.length!==0){
@@ -27,19 +30,19 @@ module.exports = {
             }
             let result1 = await Catalog.findById(id);
             if (!result1) {
-                throw Error("No Product is found");
+                throw Error("No Catalog is found");
             }
-            await Product.findByIdAndUpdate(id, {
-                name: req.body.name,
-                price: req.body.price,
-                image:req.body.image
+            await Catalog.findByIdAndUpdate(id, {
+                social_links:req.body.social_links,
+                video_url:req.body.video_url,
+                products:req.body.products
             });
-            result = await Product.findOne({
+            result = await Catalog.findOne({
                 _id: id
             });
             return {
                 result,
-                message: "product details updated "
+                message: "catalog details updated "
             }
         } catch (err) {
             return {
@@ -66,15 +69,15 @@ module.exports = {
         }
     },
 
-    getAll: async function (req){
+    getAll: async function (req){        
         let result = null;
         try{
             let owner = req.owner;
-            result = await Catalog.find({owner:owner._id});
+            result = await Catalog.find({company_name:owner.company_name});
             if(result.length===0){
-                throw Error("no product found");
+                throw Error("no catalog found");
             }
-            return{result,message:"all product for the perticular owner"}
+            return{result,message:"all catalog for the perticular owner"}
         }catch(err){
             return{error:err.message}
         }
@@ -83,15 +86,15 @@ module.exports = {
     delete: async function (id) {
         let result = null;
         try {
-            result = await Product.findById(id);
+            result = await Catalog.findById(id);
             if (result) {
-                result = await Product.findByIdAndDelete(id);
+                result = await Catalog.findByIdAndDelete(id);
                 return {
                     result: 1,
-                    message: "Product deleted successfully"
+                    message: "Catalog deleted successfully"
                 };
             } else {
-                throw Error(`no product found for this id: ${id}`)
+                throw Error(`no catalog found for this id: ${id}`)
             }
         } catch (err) {
             return {

@@ -10,7 +10,6 @@ const catalogSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true,
         trim: true,
         lowercase: true,
         validate(value) {
@@ -22,7 +21,6 @@ const catalogSchema = new Schema({
     phone: {
         type: String,
         required: true,
-        unique: true
     },
     address:{
         type:String
