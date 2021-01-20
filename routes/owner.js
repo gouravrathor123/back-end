@@ -10,6 +10,12 @@ router
     );
 
 router
+    .route("/owner/check")
+    .post(
+        ownerController.check
+    );
+
+router
     .route("/owner/update/")
     .put(
         Oauth,

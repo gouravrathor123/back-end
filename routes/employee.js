@@ -10,6 +10,12 @@ router
     );
 
 router
+    .route("/employee/check")
+    .post(
+        employeeController.check
+    );
+
+router
     .route("/employee/update/")
     .put(
         Eauth,

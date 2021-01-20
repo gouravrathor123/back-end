@@ -7,6 +7,11 @@ module.exports = {
         utils.sendResponse(result, req, res);
     },
 
+    check: async function (req,res){
+        let result = await employeeServ.check(req.body);
+        utils.sendResponse(result,req,res);
+    },
+    
     edit: async function (req, res) {
         let result = await employeeServ.update(req);
         utils.sendResponse(result, req, res);
@@ -37,7 +42,10 @@ module.exports = {
 
     login: async function (req, res) {
         let result = await employeeServ.login(req.body)
-        utils.sendResponse(result, req, res);
+        if(result.error){
+            utils.sendResponse(result,req,res.status(401));
+        }
+        utils.sendResponse(result,req,res);
     },
 
     forgetPassword: async function (req, res) {

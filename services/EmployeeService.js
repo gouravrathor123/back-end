@@ -46,6 +46,20 @@ module.exports = {
         }
     },
 
+    check: async function (req){
+        let result = null;
+        console.log(req);
+        try{
+            result = await Employee.findOne({phone:req.phone});
+            if(result){
+                throw Error("Phone no. already registerd");
+            }
+            return{result:1,message:"phone no is not registerd"};
+        }catch(err){
+            return({error:err.message});
+        }
+    },
+
     update: async function (req) {
         let result = null;
         try {

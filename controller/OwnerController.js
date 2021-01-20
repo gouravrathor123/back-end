@@ -8,6 +8,11 @@ module.exports = {
         utils.sendResponse(result, req, res);
     },
 
+    check: async function (req,res){
+        let result = await ownerServ.check(req.body);
+        utils.sendResponse(result,req,res);
+    },
+
     edit: async function (req, res) {
         let result = await ownerServ.update(req);
         utils.sendResponse(result, req, res);
