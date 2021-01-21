@@ -5,12 +5,22 @@ const utils = require("../utils/utils");
 module.exports = {
     add: async function (req, res) {
         let result = await ownerServ.add(req.body);
-        utils.sendResponse(result, req, res);
+        if(result.error){
+            utils.sendResponse(result,req,res.status(401));
+        }
+        else{
+            utils.sendResponse(result,req,res.status(200));
+        }
     },
 
     check: async function (req,res){
         let result = await ownerServ.check(req.body);
-        utils.sendResponse(result,req,res);
+        if(result.error){
+            utils.sendResponse(result,req,res.status(401));
+        }
+        else{
+            utils.sendResponse(result,req,res.status(200));
+        }
     },
 
     edit: async function (req, res) {
@@ -43,7 +53,12 @@ module.exports = {
 
     login: async function (req, res) {
         let result = await ownerServ.login(req.body)
-        utils.sendResponse(result, req, res);
+        if(result.error){
+            utils.sendResponse(result,req,res.status(401));
+        }
+        else{
+            utils.sendResponse(result,req,res.status(200));
+        }
     },
 
     forgetPassword: async function (req, res) {

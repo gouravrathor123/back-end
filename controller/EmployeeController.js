@@ -4,12 +4,22 @@ const utils = require("../utils/utils");
 module.exports = {
     add: async function (req, res) {
         let result = await employeeServ.add(req.body);
-        utils.sendResponse(result, req, res);
+        if(result.error){
+            utils.sendResponse(result,req,res.status(401));
+        }
+        else{
+            utils.sendResponse(result,req,res.status(200));
+        }
     },
 
     check: async function (req,res){
         let result = await employeeServ.check(req.body);
-        utils.sendResponse(result,req,res);
+        if(result.error){
+            utils.sendResponse(result,req,res.status(401));
+        }
+        else{
+            utils.sendResponse(result,req,res.status(200));
+        }
     },
     
     edit: async function (req, res) {
@@ -45,7 +55,9 @@ module.exports = {
         if(result.error){
             utils.sendResponse(result,req,res.status(401));
         }
-        utils.sendResponse(result,req,res);
+        else{
+            utils.sendResponse(result,req,res.status(200));
+        }
     },
 
     forgetPassword: async function (req, res) {
