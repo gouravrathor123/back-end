@@ -85,35 +85,4 @@ module.exports = {
         let result = await ownerServ.logout(req);
         utils.sendResponse(result, req, res);
     },
-
-    addTask: async function (req, res) {
-        let result = await ownerServ.addTask(req);
-        utils.sendResponse(result, req, res);
-    },
-
-    addTask: async function (req, res) {
-        let result = await ownerServ.addTask(req);
-        utils.sendResponse(result, req, res);
-    },
-
-    editTask: async function (req, res) {
-        let {
-            id
-        } = req.params;
-        let result = await ownerServ.editTask(req.body, id);
-        utils.sendResponse(result, req, res);
-    },
-
-    deleteTask: async function (req, res) {
-        let {
-            id
-        } = req.params;
-        let result = await ownerServ.deleteTask(id);
-        utils.sendResponse(result, req, res);
-    },
-
-    getAllTask: async function (req, res) {
-        let result = await ownerServ.getAllTask(req);
-        utils.sendResponse(result, req, res);
-    },
 };

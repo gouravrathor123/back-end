@@ -29,19 +29,18 @@ router
         employeeController.delete
     );
 
-// router
-//     .route("/employee/:id")
-//     .get(
-//         Eauth,
-//         employeeController.get
-//     );
-
 router
     .route("/employee/getProfile")
     .get(
         Eauth,
         employeeController.getProfile
-    )
+    );
+
+router
+    .route("/employee/:id")
+    .get(
+        employeeController.get
+    );
 
 router
     .route("/employee/logout")

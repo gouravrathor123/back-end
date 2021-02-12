@@ -4,7 +4,6 @@ const Task = require('../models/Task');
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
-const Vonage = require('@vonage/server-sdk');
 const Employee = require('../models/Employee');
 const Oauth = require('../middleware/Owner/Oauth');
 
@@ -365,105 +364,4 @@ module.exports = {
             };
         }
     },
-
-    addTask: async function (req) {
-        let result = null;
-        try {
-            let owner = req.owner;
-            let EcompanyCode = await Employee.findById(req.body.assigned_to);
-            let OcompanyCode = await Owner.findById(owner._id);
-            if (EcompanyCode.company_code !== OcompanyCode.company_code) {
-                throw Error("you cant assign task to this user");
-            }
-            const result1 = await Task.findOne({
-                task: req.body.task,
-                assigned_by: owner._id,
-                assigned_to: req.body.assigned_to
-            })
-            if (result1) {
-                throw Error("This item is already there");
-            }
-            Object.assign(req.body, {assigned_by: owner._id});
-            result = await Task.create(req.body);
-            return {
-                result,
-                message: "task assigned"
-            };
-        } catch (err) {
-            return {
-                error: err.message
-            };
-        }
-    },
-
-    editTask: async function (task, id) {
-        let result = null;
-        try {
-            if (Object.keys(task).length === 0) {
-                throw Error("Body can not be empty");
-            }
-            let result1 = await Task.findById(id);
-            console.log(result1);
-            if (!result1) {
-                throw Error("No Task is found");
-            }
-            await Task.findByIdAndUpdate(id, {
-                task: task.task,
-                completed: task.completed
-            });
-            result = await Task.findOne({
-                _id: id
-            });
-            return {
-                result,
-                message: "Task updated"
-            }
-        } catch (err) {
-            return {
-                error: err.message
-            }
-        }
-    },
-
-    deleteTask: async function (id) {
-        let result = null;
-        try {
-            result = await Task.findById(id);
-            if (result) {
-                result = await Task.findByIdAndDelete(id);
-                return {
-                    result: 1,
-                    message: "Task deleted successfully"
-                };
-            } else {
-                throw Error(`no task found for this id: ${id}`)
-            }
-        } catch (err) {
-            return {
-                error: err.message
-            }
-        }
-    },
-
-    getAllTask: async function (req) {
-        let result = null;
-        try {
-            result = await Task.find({
-                assigned_by: req.owner._id
-            });
-
-            if (result.length === 0) {
-                throw Error("No task found");
-            }
-            return {
-                result,
-                message: "list of all tasks assigned by this owner"
-            };
-        } catch (err) {
-            return {
-                error: err.message
-            };
-        }
-    }
-
 }

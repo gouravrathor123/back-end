@@ -32,8 +32,8 @@ module.exports = {
                 throw Error("No Todo is found");
             }
             await Todo.findByIdAndUpdate(id, {
-                description: req.description,
-                completed: req.completed
+                description: req.body.description,
+                completed: req.body.completed
             });
             result = await Todo.findOne({
                 _id: id

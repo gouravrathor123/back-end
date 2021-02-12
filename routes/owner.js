@@ -87,33 +87,4 @@ router
         Oauth,
         ownerController.logout
     );
-
-router
-    .route("/owner/addTask")
-    .post(
-        Oauth,
-        ownerController.addTask
-    );
-
-router
-    .route("/owner/editTask/:id")
-    .put(
-        ownerController.editTask
-    );
-
-router
-    .route("/owner/deleteTask/:id")
-    .delete(
-        ownerController.deleteTask
-    );
-
-router
-    .route("/owner/getAllTask/")
-    .get(
-        Oauth,
-        ownerController.getAllTask
-    );
-
-
-
 module.exports = router;

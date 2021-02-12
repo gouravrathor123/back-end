@@ -37,13 +37,13 @@ module.exports = {
         utils.sendResponse(result, req, res);
     },
 
-    // get: async function (req, res) {
-    //     let {
-    //         id
-    //     } = req.params;
-    //     let result = await employeeServ.get(id);
-    //     utils.sendResponse(result, req, res);
-    // },
+    get: async function (req, res) {
+        let {
+            id
+        } = req.params;
+        let result = await employeeServ.get(id);
+        utils.sendResponse(result, req, res);
+    },
 
     list: async function (req, res) {
         let result = await employeeServ.list();

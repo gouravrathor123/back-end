@@ -6,6 +6,7 @@ const ownerRouter = require('./routes/owner');
 const todoRouter = require('./routes/todo');
 const catalogRouter = require('./routes/catalog');
 const productRouter = require('./routes/product');
+const taskRouter = require('./routes/task');
 
 require('dotenv').config();
 
@@ -19,6 +20,7 @@ app.use(ownerRouter);
 app.use(todoRouter);
 app.use(catalogRouter);
 app.use(productRouter);
+app.use(taskRouter);
 
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {
@@ -33,5 +35,5 @@ connection.once('open', () => {
 });
 
 app.listen(process.env.LOCAL_PORT, () => {
-    console.log(`Server is running at port: ${process.env.LOCAL_PORT}`)
+    console.log(`Server is running at port: ${process.env.LOCAL_PORT}`);
 });

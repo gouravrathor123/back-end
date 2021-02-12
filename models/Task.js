@@ -4,12 +4,20 @@ const validator = require('validator');
 const Schema = mongoose.Schema;
 
 const taskSchema = new Schema({
-    task: {
+    title: {
         type: String,
         required: true,
         trim: true
     },
-    completed: {
+    description:{
+        type:String,
+        required:true,
+    },
+    due_date:{
+        type:Date,
+        required:true
+    },
+    status: {
         type: Boolean,
         default: false
     },
@@ -20,6 +28,9 @@ const taskSchema = new Schema({
     assigned_by: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
+    },
+    completed_at:{
+        type:String,
     }
 }, {
     timestamps: true

@@ -11,7 +11,7 @@ module.exports = {
         let {
             id
         } = req.params;
-        let result = await todoServ.update(req.body, id);
+        let result = await todoServ.update(req, id);
         utils.sendResponse(result, req, res);
     },
 

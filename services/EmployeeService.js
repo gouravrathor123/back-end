@@ -120,23 +120,23 @@ module.exports = {
         }
     },
 
-    // get: async function (id) {
-    //     let result = null;
-    //     try {
-    //         result = await Employee.findById(id);
-    //         if (!result) {
-    //             throw Error("Employee not found");
-    //         }
-    //         return {
-    //             result,
-    //             message: "Employee found"
-    //         };
-    //     } catch (err) {
-    //         return {
-    //             error: err.message
-    //         };
-    //     };
-    // },
+    get: async function (id) {
+        let result = null;
+        try {
+            result = await Employee.findById(id);
+            if (!result) {
+                throw Error("Employee not found");
+            }
+            return {
+                result,
+                message: "Employee found"
+            };
+        } catch (err) {
+            return {
+                error: err.message
+            };
+        };
+    },
 
     list: async function () {
         let result = null;
@@ -329,6 +329,7 @@ module.exports = {
 
     logout: async function (req) {
         try {
+            console.log("signout called");
             req.employee.tokens = req.employee.tokens.filter((token) => {
                 return token.token !== req.token
             });
