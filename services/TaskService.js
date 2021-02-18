@@ -28,6 +28,7 @@ module.exports = {
             Object.assign(req.body, {assigned_by: owner._id});
             Object.assign(req.body, {});
             result = await Task.create(req.body);
+            console.log(result);
             return {
                 result,
                 message: "task assigned"

@@ -76,6 +76,13 @@ router
     );
 
 router
+    .route("/owner/listofemployees")
+    .get(
+        Oauth,
+        ownerController.listofemployees
+    );
+
+router
     .route("/owner/verify")
     .post(
         ownerController.verify

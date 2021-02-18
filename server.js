@@ -7,6 +7,7 @@ const todoRouter = require('./routes/todo');
 const catalogRouter = require('./routes/catalog');
 const productRouter = require('./routes/product');
 const taskRouter = require('./routes/task');
+const dailyreport = require('./routes/dailyreport');
 
 require('dotenv').config();
 
@@ -21,6 +22,7 @@ app.use(todoRouter);
 app.use(catalogRouter);
 app.use(productRouter);
 app.use(taskRouter);
+app.use(dailyreport);
 
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {

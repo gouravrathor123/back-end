@@ -81,6 +81,11 @@ module.exports = {
         utils.sendResponse(result, req, res);
     },
 
+    listofemployees: async function (req,res) {
+        let result = await ownerServ.listofemployees(req);
+        utils.sendResponse(result,req,res);
+    },
+
     logout: async function (req, res) {
         let result = await ownerServ.logout(req);
         utils.sendResponse(result, req, res);

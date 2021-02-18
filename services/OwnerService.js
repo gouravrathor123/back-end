@@ -347,6 +347,27 @@ module.exports = {
 
     },
 
+    listofemployees: async function (req) {
+        let result = null;
+        try {
+
+            result = await Employee.find({
+                company_code:req.owner.company_code
+            });
+            if (!result) {
+                throw Error("No Owner found");
+            }
+            return {
+                result,
+                message: "List of all Owners"
+            }
+        } catch (err) {
+            return {
+                error: err.message
+            };
+        }
+    },
+
     logout: async function (req) {
         try {
             req.owner.tokens = req.owner.tokens.filter((token) => {
