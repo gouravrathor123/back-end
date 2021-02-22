@@ -58,15 +58,19 @@ router
 router
     .route("/owner/forget")
     .post(
-        Oauth,
         ownerController.forgetPassword
     );
 
 router
     .route("/owner/reset")
     .post(
-        Oauth,
         ownerController.resetPassword
+    );
+
+router
+    .route("/owner/changePassword")
+    .put(
+        ownerController.changePassword
     );
 
 router

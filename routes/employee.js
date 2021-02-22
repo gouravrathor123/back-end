@@ -64,14 +64,12 @@ router
 router
     .route("/employee/forget")
     .post(
-        Eauth,
         employeeController.forgetPassword
     );
 
 router
     .route("/employee/reset")
     .post(
-        Eauth,
         employeeController.resetPassword
     );
 

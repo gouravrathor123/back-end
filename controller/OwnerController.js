@@ -67,8 +67,23 @@ module.exports = {
     },
 
     resetPassword: async function (req, res) {
-        let result = await ownerServ.resetPassword(req.body.passcode, req.body.password, req.body.email);
-        utils.sendResponse(result, req, res);
+        let result = await ownerServ.resetPassword(req.body.passcode, req.body.email);
+        if(result.error){
+            utils.sendResponse(result,req,res.status(401));
+        }
+        else{
+            utils.sendResponse(result,req,res.status(200));
+        }   
+    },
+
+    changePassword: async function (req, res) {
+        let result = await ownerServ.changePassword(req);
+        if(result.error){
+            utils.sendResponse(result,req,res.status(401));
+        }
+        else{
+            utils.sendResponse(result,req,res.status(200));
+        }   
     },
 
     register: async function (req, res) {

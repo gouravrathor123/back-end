@@ -252,16 +252,62 @@ module.exports = {
         }
     },
 
-    resetPassword: async function (passcode, password, email) {
+    resetPassword: async function (passcode,email) {
         let result = null;
         try {
-            console.log(Date.now() + 86400000);
             result = await Owner.findOne({
                 reset_password_token: passcode,
                 email: email
-            }); //some problem with expire
+            });
+            // console.log(result);
+             //some problem with expire
+            // if (result) {
+            //     let newPasswordEnc = bcrypt.hashSync(password, 8);
+            //     await Owner.findByIdAndUpdate(result._id, {
+            //         reset_password_token: null,
+            //         password: newPasswordEnc
+            //     });
+            //     let transporter = await nodemailer.createTransport({
+            //         host: process.env.EMAIL_HOST,
+            //         port: process.env.EMAIL_PORT,
+            //         secure: true, // true for 465, false for other ports
+            //         auth: {
+            //             user: process.env.EMAIL,
+            //             pass: process.env.EMAIL_PASSWORD
+            //         }
+            //     });
+            //     await transporter.sendMail({
+            //         from: process.env.EMAIL,
+            //         to: result.email,
+            //         subject: "Password reset confirmation",
+            //         text: "This is a confirmation that the password for your account " +
+            //             result.email +
+            //             " has just been changed.\n"
+            //     });
+            if(result){
+                return {
+                    result,
+                    message:"you have enterd the right passcode"
+                };
+            }
+
+            else{
+                throw Error("wrong passcode");
+            }
+        } catch (err) {
+            return {
+                error: err.message
+            };
+        }
+    },
+
+    changePassword: async function (req) {
+        try {
+            result = await Owner.findOne({
+                email: req.body.email
+            });
             if (result) {
-                let newPasswordEnc = bcrypt.hashSync(password, 8);
+                let newPasswordEnc = bcrypt.hashSync(req.body.password, 8);
                 await Owner.findByIdAndUpdate(result._id, {
                     reset_password_token: null,
                     password: newPasswordEnc
@@ -283,17 +329,15 @@ module.exports = {
                         result.email +
                         " has just been changed.\n"
                 });
-                return {
-                    result: true,
-                    message: "Password changed successfully"
-                };
-            } else {
-                throw Error("Sorry invalid passcode for this email id.Please try agian.");
-            }
-            return {
-                result
-            };
-        } catch (err) {
+                return{
+                    result,
+                    message:"password changed succesfully"
+                }
+        }
+        else{
+            throw Error("some error occured");
+        }
+     } catch (err) {
             return {
                 error: err.message
             };
