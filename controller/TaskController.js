@@ -55,6 +55,11 @@ module.exports = {
         utils.sendResponse(result,req,res);
     },
 
+    getOwnerIncompletedTask: async function(req,res){
+        let result = await taskServ.getOwnIncompletedTask(req);
+        utils.sendResponse(result,req,res);
+    },
+
     getIncompletedTask: async function(req,res){
         let result = await taskServ.getEmpIncompletedTask(req);
         utils.sendResponse(result,req,res);

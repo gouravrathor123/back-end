@@ -178,9 +178,24 @@ module.exports = {
         try{
             const id = req.owner._id;
             result = await Task.find({
+                assigned_to:id,
+                status:false
+            });
+            return{result};
+        }catch(err){
+            return{error:err.message};
+        }
+    },
+
+    getOwnIncompletedTask: async function(req){
+        let result = null;
+        try{
+            const id = req.owner._id;
+            result = await Task.find({
                 assigned_by:id,
                 status:false
             });
+            console.log(result);
             return{result};
         }catch(err){
             return{error:err.message};

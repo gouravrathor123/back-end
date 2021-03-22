@@ -61,7 +61,7 @@ router
     .route("/owner/getIncompletedTask")
     .get(
         Oauth,
-        taskController.getIncompletedTask
+        taskController.getOwnerIncompletedTask
     );
 
 router
