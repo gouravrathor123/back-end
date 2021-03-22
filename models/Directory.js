@@ -1,26 +1,25 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-
 const Schema = mongoose.Schema;
 
-const todoSchema = new Schema({
-    description: {
+const directorySchema = new Schema({
+    name: {
         type: String,
         required: true,
-        trim: true
     },
-    completed: {
-        type: Boolean,
-        default: false
+    phone: {
+        type:String,
+        required : true,
+        unique:true
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
+        required: true
     }
 }, {
     timestamps: true
 });
 
-const Todo = mongoose.model('Todo', todoSchema);
+const Directory = mongoose.model('Directory', directorySchema);
 
-module.exports = Todo;
+module.exports = Directory;

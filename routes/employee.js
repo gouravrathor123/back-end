@@ -85,9 +85,8 @@ router
         employeeController.verify
     );
 
-
 router
-    .route("/employee/getTasks/")
+    .route("/employee/getinprocess/Tasks/")
     .get(
         Eauth,
         employeeController.getTasks

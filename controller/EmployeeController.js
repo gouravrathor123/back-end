@@ -5,7 +5,7 @@ module.exports = {
     add: async function (req, res) {
         let result = await employeeServ.add(req.body);
         if(result.error){
-            utils.sendResponse(result,req,res.status(401));
+            utils.sendResponse(result,req,res.status(400));
         }
         else{
             utils.sendResponse(result,req,res.status(200));
@@ -28,7 +28,7 @@ module.exports = {
     },
 
     getProfile: async function (req, res) {
-        let result = await employeeServ.getme(req);
+        let result = await employeeServ.getProfile(req);
         utils.sendResponse(result, req, res);
     },
 

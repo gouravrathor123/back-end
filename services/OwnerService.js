@@ -6,6 +6,20 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const Employee = require('../models/Employee');
 const Oauth = require('../middleware/Owner/Oauth');
+const multer = require('multer');
+const path = require('path');
+const upload=multer({
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req,file,cb){
+        if(!file.originalname.match(/\.(jpg|jpeg|png)&/)){
+            return cb(new Error('Please upload an image'));
+        }
+
+        cb(undefined, true);
+    }
+});
 
 
 module.exports = {
@@ -137,6 +151,24 @@ module.exports = {
             return {
                 error: err.message
             };
+        }
+    },
+
+    uploadavatar: async function(req){
+        let result = null;
+        try{
+            // console.log(req);
+            // req.owner.avatar = req.file.buffer
+            // console.log(req.file.buffer);
+            // result = await req.owner.save();
+            result = await Owner.findByIdAndUpdate(req.owner._id,{
+                avatar: req.file.path
+            })
+            // console.log("working on upload profile");
+            // console.log(req.owner._id);
+            return{result,message:"profile pic added"}
+        }catch(err){
+            return{error:err.message};
         }
     },
 

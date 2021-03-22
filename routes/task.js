@@ -2,6 +2,7 @@ const express = require('express');
 const taskController = require('../controller/TaskController')
 const router = new express.Router();
 const Oauth = require("../middleware/Owner/Oauth");
+const Eauth = require("../middleware/Employee/Eauth");
 
 router
     .route("/owner/addTask")
@@ -46,6 +47,13 @@ router
     .route("/owner/getCompletedTask")
     .get(
         Oauth,
+        taskController.getOwnerCompletedTask
+    );
+
+router
+    .route("/employee/getCompleted/Task")
+    .get(
+        Eauth,
         taskController.getCompletedTask
     );
 
@@ -53,6 +61,13 @@ router
     .route("/owner/getIncompletedTask")
     .get(
         Oauth,
+        taskController.getIncompletedTask
+    );
+
+router
+    .route("/employee/getIncompleted/Task")
+    .get(
+        Eauth,
         taskController.getIncompletedTask
     );
 module.exports = router;

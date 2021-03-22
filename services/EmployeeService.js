@@ -93,10 +93,18 @@ module.exports = {
 
     getProfile: async function (req) {
         let result = req.employee;
-        console.log(result);
-        return {
-            result
-        };
+        try{
+            if(result){
+                return {result};
+            }
+            else{
+                throw Error();
+            }
+        }catch(err){
+            return{
+                error:err.message
+            }
+        }
     },
 
     delete: async function (req) {
@@ -349,12 +357,14 @@ module.exports = {
     getTasks: async function (req) {
         let result = null;
         try {
+            console.log("jay shree ram");
             result = await Task.find({
                 assigned_to: req.employee._id
             });
             if (result.length === 0) {
                 throw Error("There is no task for you");
             }
+            console.log(result);
             return {
                 result,
                 message: "Here is the list of all Tasks that are assigned to you"

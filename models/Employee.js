@@ -36,6 +36,10 @@ const employeeSchema = new Schema({
         required: true,
         unique: true
     },
+    avatar:{
+        type: String,
+        default:""
+    },
     date_of_birth: {
         type: Date,
         required: true

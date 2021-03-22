@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const multer = require('multer');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -34,6 +35,10 @@ const ownerSchema = new Schema({
     date_of_birth: {
         type: Date,
         required: true
+    },
+    avatar:{
+        type: String,
+        default:""
     },
     company_name: {
         type: String,

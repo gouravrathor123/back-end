@@ -33,6 +33,11 @@ module.exports = {
         utils.sendResponse(result, req, res);
     },
 
+    uploadavatar: async function (req,res) {
+        let result = await ownerServ.uploadavatar(req);
+        utils.sendResponse(result,req,res);
+    },
+
     // get: async function (req, res) {
     //     let {
     //         id

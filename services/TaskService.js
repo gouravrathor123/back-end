@@ -158,6 +158,21 @@ module.exports = {
         }
     },
 
+    getEmpCompletedTask: async function(req){
+        let result = null;
+        try{
+            const id = req.employee._id;
+            result = await Task.find({
+                assigned_to:id,
+                status:true
+            });
+            
+            return{result};
+        }catch(err){
+            return{error:err.message};
+        }
+    },
+
     getIncompletedTask: async function(req){
         let result = null;
         try{
@@ -166,6 +181,21 @@ module.exports = {
                 assigned_by:id,
                 status:false
             });
+            return{result};
+        }catch(err){
+            return{error:err.message};
+        }
+    },
+
+    getEmpIncompletedTask: async function(req){
+        let result = null;
+        try{
+            const id = req.employee._id;
+            result = await Task.find({
+                assigned_to:id,
+                status:false
+            });
+            console.log(result);
             return{result};
         }catch(err){
             return{error:err.message};

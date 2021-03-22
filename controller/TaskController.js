@@ -45,13 +45,18 @@ module.exports = {
         utils.sendResponse(result,req,res);
     },
 
-    getCompletedTask: async function(req,res){
+    getOwnerCompletedTask: async function(req,res){
         let result = await taskServ.getCompletedTask(req);
         utils.sendResponse(result,req,res);
     },
 
+    getCompletedTask: async function(req,res){
+        let result = await taskServ.getEmpCompletedTask(req);
+        utils.sendResponse(result,req,res);
+    },
+
     getIncompletedTask: async function(req,res){
-        let result = await taskServ.getIncompletedTask(req);
+        let result = await taskServ.getEmpIncompletedTask(req);
         utils.sendResponse(result,req,res);
     },
 }
